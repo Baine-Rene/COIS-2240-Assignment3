@@ -11,7 +11,6 @@ public class VehicleRentalApp {
             int choice = scanner.nextInt();
             scanner.nextLine();
             	
-//            this is a test
             switch (choice) {
                 case 1:
                     System.out.println("  1: Car\n  2: Motorcycle\n  3: Truck");
