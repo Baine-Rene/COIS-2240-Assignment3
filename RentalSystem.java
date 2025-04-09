@@ -33,10 +33,16 @@ public class RentalSystem {
     }
 
     public boolean addVehicle(Vehicle vehicle) {
+        if (vehicle == null || vehicle.getLicensePlate() == null || vehicle.getLicensePlate().isBlank()) {
+            System.out.println("Error: Vehicle or license plate is null or empty.");
+            return false;
+        }
+
         if (findVehicleByPlate(vehicle.getLicensePlate()) != null) {
             System.out.println("Error: A vehicle with the license plate " + vehicle.getLicensePlate() + " already exists.");
             return false;
         }
+
         vehicles.add(vehicle);
         saveVehicle(vehicle);
         return true;
@@ -97,8 +103,12 @@ public class RentalSystem {
 
     private void saveRecord(RentalRecord record) {
         try (PrintWriter pw = new PrintWriter(new FileWriter("rental_records.txt", true))) {
-            pw.printf("%s,%d,%s,%.2f,%s%n",
-                    record.getVehicle().getLicensePlate(), record.getCustomer().getCustomerId());
+            pw.printf("%s | %s | %s | %s | %.2f\n",
+                    record.getType(),
+                    record.getVehicle().getLicensePlate(),
+                    record.getCustomer().getCustomerName(),
+                    record.getDate(),
+                    record.getAmount());
         } catch (IOException e) {
             System.err.println("Error saving rental record: " + e.getMessage());
         }
@@ -177,7 +187,7 @@ public class RentalSystem {
     }
 
     public Vehicle findVehicleByPlate1(String plate) {
-        return vehicles.stream().filter(v -> v.getLicensePlate().equalsIgnoreCase(plate)).findFirst().orElse(null);
+        return null;//vehicles.stream().filter(v -> v.getLicensePlate().equalsIgnoreCase(plate)).findFirst().orElse(null);
     }
 
     public Customer findCustomerById1(int id) {
@@ -190,7 +200,7 @@ public class RentalSystem {
     	System.out.println("---------------------------------------------------------------------------------");
     	 
         for (Vehicle v : vehicles) {
-            if (v.getStatus() == Vehicle.VehicleStatus.AVAILABLE) {
+            if (v.getLicensePlate()!=null && v.getStatus() == Vehicle.VehicleStatus.AVAILABLE) {
                 System.out.println("|     " + (v instanceof Car ? "Car          " : "Motorcycle   ") + "|\t" + v.getLicensePlate() + "\t|\t" + v.getMake() + "\t|\t" + v.getModel() + "\t|\t" + v.getYear() + "\t|\t");
             }
         }
@@ -217,7 +227,8 @@ public class RentalSystem {
     
     public Vehicle findVehicleByPlate(String plate) {
         for (Vehicle v : vehicles) {
-            if (v.getLicensePlate().equalsIgnoreCase(plate)) {
+            String lp = v.getLicensePlate();
+            if (lp != null && lp.equalsIgnoreCase(plate)) {
                 return v;
             }
         }

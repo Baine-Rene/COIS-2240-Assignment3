@@ -7,7 +7,10 @@ public class Truck extends Vehicle implements Rentable {
         this.cargoCapacity = cargoCapacity;
     }
 
-    public double getCargoCapacity() {
+    public Truck(String licensePlate, String make, String model, int year, Vehicle.VehicleStatus status) {
+	}
+
+	public double getCargoCapacity() {
         return cargoCapacity;
     }
 
