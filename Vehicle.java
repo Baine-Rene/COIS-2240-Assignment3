@@ -41,7 +41,6 @@ public abstract class Vehicle {
         if (plate == null || plate.isEmpty()) {
             return false;
         }
-        // Pattern: 3 letters followed by 3 numbers (case insensitive)
         return plate.matches("(?i)[A-Z]{3}\\d{3}");
     }
 

@@ -3,6 +3,12 @@ import org.junit.jupiter.api.BeforeEach;
 import static org.junit.jupiter.api.Assertions.*;
 import java.time.LocalDate;
 
+class TestVehicle extends Vehicle {
+    public TestVehicle(String make, String model, int year) {
+        super(make, model, year);
+    }
+}
+
 public class VehicleRentalTest {
     private RentalSystem rentalSystem;
     private Vehicle vehicle;
@@ -14,6 +20,29 @@ public class VehicleRentalTest {
         vehicle = new Car("Toyota", "Camry", 2022, 5);
         vehicle.setLicensePlate("ABC123");
         customer = new Customer(1, "John Doe");
+    }
+    
+    
+    @Test
+    public void testLicensePlateValidation() {
+
+        assertDoesNotThrow(() -> vehicle.setLicensePlate("AAA100"));
+        assertDoesNotThrow(() -> vehicle.setLicensePlate("ABC567"));
+        assertDoesNotThrow(() -> vehicle.setLicensePlate("ZZZ999"));
+        assertDoesNotThrow(() -> vehicle.setLicensePlate("aaa100")); 
+        assertDoesNotThrow(() -> vehicle.setLicensePlate("AbC123")); 
+        assertDoesNotThrow(() -> vehicle.setLicensePlate(null)); 
+        
+        assertThrows(IllegalArgumentException.class, () -> vehicle.setLicensePlate(""));
+        assertThrows(IllegalArgumentException.class, () -> vehicle.setLicensePlate("AAA1000"));
+        assertThrows(IllegalArgumentException.class, () -> vehicle.setLicensePlate("ZZZ99"));
+        assertThrows(IllegalArgumentException.class, () -> vehicle.setLicensePlate("123ABC"));
+        assertThrows(IllegalArgumentException.class, () -> vehicle.setLicensePlate("A1B2C3"));
+        assertThrows(IllegalArgumentException.class, () -> vehicle.setLicensePlate("ABC12"));
+        assertThrows(IllegalArgumentException.class, () -> vehicle.setLicensePlate("ABCDEF"));
+        
+        vehicle.setLicensePlate("abc123");
+        assertEquals("ABC123", vehicle.getLicensePlate());
     }
     
     @Test
