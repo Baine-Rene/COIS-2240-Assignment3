@@ -16,7 +16,7 @@ public class RentalSystem {
     private RentalHistory rentalHistory = new RentalHistory();
     
     
-    public RentalSystem() {
+    private RentalSystem() {
         this.vehicles = new ArrayList<>();
         this.customers = new ArrayList<>();
         this.rentalHistory = new RentalHistory();

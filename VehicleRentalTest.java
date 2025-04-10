@@ -1,5 +1,7 @@
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.BeforeEach;
+import java.lang.reflect.Constructor;
+import java.lang.reflect.Modifier;
 import static org.junit.jupiter.api.Assertions.*;
 import java.time.LocalDate;
 
@@ -64,4 +66,26 @@ public class VehicleRentalTest {
         boolean returnAgain = rentalSystem.returnVehicle(vehicle, customer, LocalDate.now(), 0.0);
         assertFalse(returnAgain, "Returning an already available vehicle should fail");
     }
-}
+    
+
+    @Test
+    public void testSingletonRentalSystem() throws Exception {
+        Constructor<RentalSystem> constructor = RentalSystem.class.getDeclaredConstructor();
+
+        assertTrue(Modifier.isPrivate(constructor.getModifiers()),
+            "Constructor should be private");
+
+        constructor.setAccessible(true);
+        
+        try {
+            RentalSystem newInstance = constructor.newInstance();
+ 
+            assertNotSame(RentalSystem.getInstance(), newInstance,
+                "New instance should be different from singleton instance");
+        } catch (Exception e) {
+            
+        }
+        assertNotNull(RentalSystem.getInstance(),
+            "getInstance() should return non-null");
+    }
+   }
