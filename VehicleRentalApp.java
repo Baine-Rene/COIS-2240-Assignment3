@@ -1,4 +1,4 @@
-2import java.util.Scanner;
+import java.util.Scanner;
 import java.time.LocalDate;
 
 public class VehicleRentalApp {
@@ -13,13 +13,15 @@ public class VehicleRentalApp {
             	
 //            this is a test for printing
             switch (choice) {
-                case 1:
-                    System.out.println("  1: Car\n  2: Motorcycle\n  3: Truck");
-                    int type = scanner.nextInt();
-                    scanner.nextLine();
+            case 1:
+                System.out.println("  1: Car\n  2: Motorcycle\n  3: Truck");
+                int type = scanner.nextInt();
+                scanner.nextLine();
 
-                    System.out.print("Enter license plate: ");
-                    String plate = scanner.nextLine().toUpperCase();
+                System.out.print("Enter license plate: ");
+                String plate = scanner.nextLine().toUpperCase();
+                
+                try {
                     System.out.print("Enter make: ");
                     String make = scanner.nextLine();
                     System.out.print("Enter model: ");
@@ -39,24 +41,27 @@ public class VehicleRentalApp {
                         boolean sidecar = scanner.nextBoolean();
                         vehicle = new Motorcycle(make, model, year, sidecar);
                         System.out.print("Motorcycle added successfuly.");
-		            } else if (type == 3) {
-		                System.out.print("Enter the cargo capacity: ");
-		                double cargoCapacity = scanner.nextDouble();
-		                vehicle = new Truck(make, model, year, cargoCapacity);
-		                System.out.print("Motorcycle added successfuly.");
-		            } else {
-		            	vehicle = null;
-		            }
+                    } else if (type == 3) {
+                        System.out.print("Enter the cargo capacity: ");
+                        double cargoCapacity = scanner.nextDouble();
+                        vehicle = new Truck(make, model, year, cargoCapacity);
+                        System.out.print("Motorcycle added successfuly.");
+                    } else {
+                        vehicle = null;
+                    }
                     
                     if (vehicle != null){
-	                    vehicle.setLicensePlate(plate);
-	                    rentalSystem.addVehicle(vehicle);
-	                    System.out.print("Vehicle added.");
+                        vehicle.setLicensePlate(plate); 
+                        rentalSystem.addVehicle(vehicle);
+                        System.out.print("Vehicle added.");
                     }
                     else {
-	                    System.out.print("Vehicle not added.");
+                        System.out.print("Vehicle not added.");
                     }
-                    break;
+                } catch (IllegalArgumentException e) {
+                    System.out.println("Error: Invalid license plate format. Please use format AAA123.");
+                }
+                break;
 
                 case 2:
                     System.out.print("Enter customer ID: ");
